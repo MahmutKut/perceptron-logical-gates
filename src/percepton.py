@@ -1,4 +1,4 @@
-# EXAMPLE : FIND THE TRUE WEIGHT VALUE FOR AND TABLE
+# EXAMPLE : FIND THE TRUE WEIGHT VALUE
 """
 ----------- AND TABLE -----------
 input[0]    input[1]   |   output
@@ -11,37 +11,53 @@ input[0]    input[1]   |   output
 input       = [(0,0),(0,1),(1,0),(1,1)]
 output      = [0,0,0,1]
 
+w0     = 1
+w1     = 1
+w2     = 1
 
-weight1     = 1
-weight2     = 1
-threshold   = 5
-result      = list()
-alfa        = 0.5          # learing rate
-iteration   = 0
+bias            = -5
+learing_rate    = 2
+
+iteration       = 0
+result          = list()
+
+#Rule-1:
+# bias*w0+x1*w1+x2*w2 > 0 ---> 1
+# bias*w0+x1*w1+x2*w2 < 0 ---> 0
+
+#Rule-2:
+# if (result != output)   ---> error = output - result
+
+#New weights:
+# w1 = w1 + learing_rate * error * x1
+# w2 = w2 + learing_rate * error * x2
 
 while True:
 
     for i in range (len(input)):
-        if(((input[i][0]*weight1)+(input[i][1]*weight2))>threshold):
-            result.append(1)
+        x1  = input[i][0]
+        x2  = input[i][1]
+        equation = bias*w0+x1*w1+x2*w2
+
+        if(equation>0):
+            result.append(1) 
         else:
-            result.append(0)
+            result.append(0) 
 
-        if(result[i]!=output[i]):
+        if(result[i] == output[i]):
+           continue
+        else:
             error = output[i] - result[i]
-            D_weight1 = error * alfa * input[i][0]
-            D_weight2 = error * alfa * input[i][1]
-            weight1 = weight1 + D_weight1
-            weight2 = weight2 + D_weight2
-            result.clear()
-            break
-
-    iteration = iteration + 1 
-
+            w1 = w1 + learing_rate * error * x1
+            w2 = w2 + learing_rate * error * x2
     if(result == output):
-        print("Weight1 ---> "+str(weight1))
-        print("Weight2 ---> "+str(weight2))
-        print("Iteration ---> "+str(iteration))
+        print("Last w1 ---> "           +str(w1))
+        print("Last w2 ---> "           +str(w2))
+        print("Total Iteration ---> "   +str(iteration))
         break
+    else:
+        result.clear()
+    iteration = iteration + 1 
+  
 
     
